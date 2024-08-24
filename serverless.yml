@@ -1,0 +1,41 @@
+service: motorbike-shop
+frameworkVersion: '3'
+
+package:
+  individually: true
+  patterns:
+    - "!*/**"
+
+custom:
+  serverlessPluginTypescript:
+    tsConfigFileLocation: './tsconfig.json'
+
+provider:
+  name: aws
+  region: us-east-2
+  runtime: nodejs14.x
+
+functions:
+  create-customer:
+    handler: src/motorbike-shop/infraestructure/controllers/create.handler
+    package: 
+      patterns:
+        - '!src/test/**'
+        - 'src/motorbike-shop/infraestructure/controllers/create.ts'
+        - 'src/motorbike-shop/application/create.application.ts'
+        - 'src/motorbike-shop/domain/customer.dto.ts'
+        - 'src/motorbike-shop/domain/customer.repository.ts'
+        - 'src/motorbike-shop/infraestructure/guards/body-request.guard.ts'
+        - 'src/motorbike-shop/infraestructure/aws/dynamodb.client.ts'
+        - 'src/motorbike-shop/infraestructure/db/dynamodb.repository.ts'
+    events:
+      - http:
+          path: customers
+          method: POST
+          request:
+            schemas:
+              application/json: ${file(src/motorbike-shop/domain/schemas/customer.schema.json)}
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-offline
