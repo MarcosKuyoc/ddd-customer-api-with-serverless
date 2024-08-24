@@ -9,11 +9,24 @@ package:
 custom:
   serverlessPluginTypescript:
     tsConfigFileLocation: './tsconfig.json'
+  serverless-dynamodb:
+    stages:
+      - dev
+    start:
+      inMemory: true
+      migrate: true
+      docker: true
 
 provider:
   name: aws
   region: us-east-2
   runtime: nodejs14.x
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action: 'dynamodb:*'
+          Resource: arn:aws:dynamodb:${AWS:region}:${AWS:AccountId}:table/customersTable
 
 functions:
   create-customer:
@@ -38,4 +51,46 @@ functions:
 
 plugins:
   - serverless-plugin-typescript
+  - serverless-dynamodb
   - serverless-offline
+
+resources:
+  Resources:
+    customersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: customersTable
+        AttributeDefinitions:
+          - AttributeName: pk
+            AttributeType: S
+          - AttributeName: credit
+            AttributeType: N
+          - AttributeName: email
+            AttributeType: S
+        KeySchema:
+          - AttributeName: pk
+            KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: credit
+            KeySchema:
+              - AttributeName: pk
+                KeyType: HASH
+              - AttributeName: credit
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
+          - IndexName: email-index
+            KeySchema:
+              - AttributeName: email
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
