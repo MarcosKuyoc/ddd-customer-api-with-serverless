@@ -1,7 +1,7 @@
-import { CreateApplication } from "../../../../motorbike-shop/application/create.application";
+import { CustomerCreateApplication } from "../../../../motorbike-shop/application/create.application";
 import { CustomerDto } from "../../../../motorbike-shop/domain";
 
-describe('CreateApplication', () => {
+describe('CustomerCreateApplication', () => {
   const mockCustomerRepository = {
     create: jest.fn(),
     findById: jest.fn(),
@@ -25,7 +25,7 @@ describe('CreateApplication', () => {
     const mockCreate = mockCustomerRepository.create.mockResolvedValueOnce(customerId);
 
     // Act
-    const customer = new CreateApplication(mockCustomerRepository);
+    const customer = new CustomerCreateApplication(mockCustomerRepository);
     const result = await customer.create(payload)
     
     // Asserts
@@ -40,7 +40,7 @@ describe('CreateApplication', () => {
 
     try {
       // Act
-      const customer = new CreateApplication(mockCustomerRepository);
+      const customer = new CustomerCreateApplication(mockCustomerRepository);
       await customer.create(payload);
     } catch (error: any) {
       // Asserts
