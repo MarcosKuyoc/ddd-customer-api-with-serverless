@@ -21,7 +21,50 @@ export class DynamoDBRepository implements CustomerRepository {
   }
 
   async findById(id: string): Promise<CustomerDto | null> {
-    throw new Error("Method not implemented.");
+    try {
+      const params = {
+        TableName: TABLE_NAME,
+        KeyConditionExpression: 'pk = :pk',
+        ExpressionAttributeValues: { ':pk': id}
+      }
+      const customer = await DynamoDBClient.query(params).promise();
+
+      if (customer.Items && customer.Items.length > 0) {
+         const item = customer.Items[0];
+         return {
+          id: item.pk,
+          name: item.name,
+          email: item.email,
+          phone: item.phone,
+          address: item.address,
+          credit: item.credit
+         }
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.error('DynamoDBRepository -> findById');
+      throw error;
+    }
+  }
+
+  async findByEmail(email: string): Promise<boolean> {
+    try {
+      const params = {
+        TableName: TABLE_NAME,
+        IndexName: 'email-index',
+        KeyConditionExpression: 'email = :email',
+        ExpressionAttributeValues: { ':email': email}
+      };
+      console.log(params);
+      const customer = await DynamoDBClient.query(params).promise();
+
+      return (customer.Count ?? 0) > 0;
+    } catch (error: any) {
+      console.error('DynamoDBRepository -> findByEmail');
+      console.error(error.message);
+      throw error;
+    }
   }
 
   async update(id: string, data: Omit<CustomerDto, "id" | "credit">): Promise<void> {
