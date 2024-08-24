@@ -5,6 +5,7 @@ describe('CustomerCreateApplication', () => {
   const mockCustomerRepository = {
     create: jest.fn(),
     findById: jest.fn(),
+    findByEmail: jest.fn(),
     update: jest.fn(),
     delete: jest.fn()
   };
@@ -22,6 +23,7 @@ describe('CustomerCreateApplication', () => {
     const customerId = {
       id: '123456',
     }
+    const mockFindByEmail = mockCustomerRepository.findByEmail.mockResolvedValueOnce(false);
     const mockCreate = mockCustomerRepository.create.mockResolvedValueOnce(customerId);
 
     // Act
@@ -30,12 +32,14 @@ describe('CustomerCreateApplication', () => {
     
     // Asserts
     expect(result).toBeDefined();
+    expect(mockFindByEmail).toHaveBeenCalledTimes(1);
     expect(mockCreate).toHaveBeenCalledTimes(1);
     expect(typeof result.id).toBe('string');
   });
 
   it('should return throw error in database', async() => {
     // Arrange
+    const mockFindByEmail = mockCustomerRepository.findByEmail.mockResolvedValueOnce(false);
     const mockCreate = mockCustomerRepository.create.mockRejectedValueOnce(new Error('any error in database'));
 
     try {
@@ -45,8 +49,25 @@ describe('CustomerCreateApplication', () => {
     } catch (error: any) {
       // Asserts
       expect(error).toBeDefined();
+      expect(mockFindByEmail).toHaveBeenCalledTimes(1);
       expect(mockCreate).toHaveBeenCalledTimes(1);
       expect(error.message).toEqual('any error in database');
     }
-  })
+  });
+
+  it('should return throw error in email exists', async() => {
+    // Arrange
+    const mockFindByEmail = mockCustomerRepository.findByEmail.mockResolvedValueOnce(true);
+
+    try {
+      // Act
+      const customer = new CustomerCreateApplication(mockCustomerRepository);
+      await customer.create(payload);
+    } catch (error: any) {
+      // Asserts
+      expect(error).toBeDefined();
+      expect(mockFindByEmail).toHaveBeenCalledTimes(1);
+      expect(error.message).toEqual(`the email ${payload.email} exist in database`);
+    }
+  });
 })
