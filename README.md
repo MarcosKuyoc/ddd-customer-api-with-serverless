@@ -35,7 +35,7 @@ yarn run deploy:offline
 4. aws-lambda
 
 ```bash
-yarn add -D serverless@3.2.0 serverless-offline@13.7.0 serverless-dynamodb@0.2.54 @types/aws-lambda
+yarn add -D serverless@3.2.0 serverless-offline@13.7.0 serverless-plugin-typescript
 ```
 
 ### For Node.js, Typescript and Jest
