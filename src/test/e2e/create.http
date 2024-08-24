@@ -1,0 +1,9 @@
+POST http://localhost:3000/dev/customers
+Content-Type: application/json
+
+{
+  "name": "Juan Kuyoc",
+  "email": "jmke.mat@gmail.com",
+  "phone": "9842773217",
+  "address": "Calle"
+}
