@@ -56,6 +56,7 @@ yarn add -D typescript ts-node jest ts-jest @types/node @types/jest
 ```bash
 yarn add -D serverless-dynamodb@0.2.54 aws-sdk
 yarn add uuid
+yarn add -D @types/uuid
 ```
 
 ### For linters
