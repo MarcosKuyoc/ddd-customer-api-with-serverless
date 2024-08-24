@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft-04/schema#",
+  "title": "Credit",
+  "type": "object",
+  "required": ["credit"],
+  "properties": {
+    "credit": {
+      "type": "number",
+      "description": "add credit to a customer",
+      "minimum": 0
+    }
+  },
+  "additionalProperties": false
+}
