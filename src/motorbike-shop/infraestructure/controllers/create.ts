@@ -14,7 +14,7 @@ export const handler = async(event: APIGatewayProxyEvent) => {
     console.info(`The client was successfully created with id: ${id}`);
     return {
       statusCode: 201,
-      body: id
+      body: JSON.stringify(id)
     }
   } catch (error: any) {
     console.error('[create - handler]');
