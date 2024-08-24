@@ -1,0 +1,13 @@
+{
+  "preset": "ts-jest",
+  "testEnvironment": "node",
+  "clearMocks": true,
+  "collectCoverage": true,
+  "silent": true,
+  "coverageDirectory": "coverage",
+  "coverageProvider": "v8",
+  "testPathIgnorePatterns": ["/node_modules/", ".build"],
+  "transform": {
+    "^.+\\.(ts|tsx)$": "ts-jest"
+  }
+}
