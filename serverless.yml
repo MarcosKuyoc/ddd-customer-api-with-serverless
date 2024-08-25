@@ -48,6 +48,113 @@ functions:
           request:
             schemas:
               application/json: ${file(src/motorbike-shop/domain/schemas/customer.schema.json)}
+  find-customers:
+    handler: src/motorbike-shop/infraestructure/controllers/find.handler
+    package:
+      patterns:
+        - '!src/test/**'
+        - 'src/motorbike-shop/infraestructure/controllers/find.ts'
+        - 'src/motorbike-shop/application/find.application.ts'
+        - 'src/motorbike-shop/infraestructure/aws/dynamodb.client.ts'
+        - 'src/motorbike-shop/infraestructure/db/dynamodb.repository.ts'
+    events:
+      - http:
+          path: customers
+          method: GET
+  find-customer-by-id:
+    handler: src/motorbike-shop/infraestructure/controllers/find-by-id.handler
+    package:
+      patterns:
+        - '!src/test/**'
+        - 'src/motorbike-shop/infraestructure/controllers/find-by-id.ts'
+        - 'src/motorbike-shop/application/find-by-id.application.ts'
+        - 'src/motorbike-shop/infraestructure/guards/path-parameters.guard.ts'
+        - 'src/motorbike-shop/infraestructure/aws/dynamodb.client.ts'
+        - 'src/motorbike-shop/infraestructure/db/dynamodb.repository.ts'
+    events:
+      - http:
+          path: customers/{id}
+          method: GET
+          request:
+            parameters:
+              paths:
+                id: true
+  update-customers:
+    handler: src/motorbike-shop/infraestructure/controllers/update.handler
+    package:
+      patterns:
+        - '!src/test/**'
+        - 'src/motorbike-shop/infraestructure/controllers/update.ts'
+        - 'src/motorbike-shop/application/update.application.ts'
+        - 'src/motorbike-shop/infraestructure/guards/path.guard.ts'
+        - 'src/motorbike-shop/infraestructure/guards/body.guard.ts'
+        - 'src/motorbike-shop/infraestructure/aws/dynamodb.client.ts'
+        - 'src/motorbike-shop/infraestructure/db/dynamodb.repository.ts'
+    events:
+      - http:
+          path: customers/{id}
+          method: PATCH
+          request:
+            parameters:
+              paths:
+                id: true
+            schemas:
+              application/json: ${file(src/motorbike-shop/domain/schemas/customer.schema.json)}
+  delete-customer:
+    handler: src/motorbike-shop/infraestructure/controllers/delete.handler
+    package:
+      patterns:
+        - '!src/test/**'
+        - 'src/motorbike-shop/infraestructure/controllers/delete.ts'
+        - 'src/motorbike-shop/application/delete.application.ts'
+        - 'src/motorbike-shop/infraestructure/guards/path.guard.ts'
+        - 'src/motorbike-shop/infraestructure/aws/dynamodb.client.ts'
+        - 'src/motorbike-shop/infraestructure/db/dynamodb.repository.ts'
+    events:
+      - http:
+          path: customers/{id}
+          method: DELETE
+          request:
+            parameters:
+              paths:
+                id: true
+  add-credit:
+    handler: src/motorbike-shop/infraestructure/controllers/add-credit.handler
+    package:
+      patterns:
+        - '!src/test/**'
+        - 'src/motorbike-shop/infraestructure/controllers/add-credit.ts'
+        - 'src/motorbike-shop/application/add-credit.application.ts'
+        - 'src/motorbike-shop/infraestructure/guards/body-request.guard.ts'
+        - 'src/motorbike-shop/infraestructure/aws/dynamodb.client.ts'
+        - 'src/motorbike-shop/infraestructure/db/dynamodb.repository.ts'
+    events:
+      - http:
+          path: customers/credit/{id}
+          method: POST
+          request:
+            parameters:
+              paths:
+                id: true
+            schemas:
+              application/json: ${file(src/motorbike-shop/domain/schemas/credit.schema.json)}
+  customer-sorted:
+    handler: src/motorbike-shop/infraestructure/controllers/sorted-by-credit.handler
+    package:
+      patterns:
+        - '!src/test/**'
+        - 'src/motorbike-shop/infraestructure/controllers/sorted-by-credit.ts'
+        - 'src/motorbike-shop/application/sorted-by-credit.application.ts'
+        - 'src/motorbike-shop/infraestructure/aws/dynamodb.client.ts'
+        - 'src/motorbike-shop/infraestructure/db/dynamodb.repository.ts'
+    events:
+      - http:
+          path: customers/credit/sorted
+          method: GET
+          request:
+            parameters:
+              querystrings:
+                sort: true
 
 plugins:
   - serverless-plugin-typescript
@@ -61,19 +168,19 @@ resources:
       Properties:
         TableName: customersTable
         AttributeDefinitions:
-          - AttributeName: pk
+          - AttributeName: id
             AttributeType: S
           - AttributeName: credit
             AttributeType: N
           - AttributeName: email
             AttributeType: S
         KeySchema:
-          - AttributeName: pk
+          - AttributeName: id
             KeyType: HASH
         GlobalSecondaryIndexes:
           - IndexName: credit
             KeySchema:
-              - AttributeName: pk
+              - AttributeName: id
                 KeyType: HASH
               - AttributeName: credit
                 KeyType: RANGE
