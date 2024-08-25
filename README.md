@@ -18,7 +18,12 @@ npm i -g yarn
 
 ## Install Dependencies with Yarn
 ```bash
-yarn i
+yarn install
+```
+
+## Testing
+```bash
+yarn run test
 ```
 
 ## Deploy - Offline
@@ -27,7 +32,7 @@ docker-compose up -d
 yarn run deploy:offline
 ```
 
-## Dependecies to used
+## Dependecies to used(purely informative)
 ### For serverless
 1. serverless
 2. serverless-offline
@@ -35,7 +40,7 @@ yarn run deploy:offline
 4. aws-lambda
 
 ```bash
-yarn add -D serverless@3.2.0 serverless-offline@13.7.0 serverless-plugin-typescript
+yarn add -D serverless@3.2.0 serverless-offline@13.7.0 serverless-plugin-typescript @types/aws-lambda
 ```
 
 ### For Node.js, Typescript and Jest
@@ -65,6 +70,37 @@ yarn add -D eslint prettier
 ```
 
 ## Deploy - Production
+### Prerequisites
+1. You need to have an aws account or create one
+2. Create an AIM user for serverless and generate the credentials
+3. Grant the necessary permissions
+4. Configure aws cli on your computer
+
+```bash
+aws configure
+```
+### You will be asked for the following:
+1. AWS Access Key ID:
+2. AWS Secret Access Key:
+3. Region [us-east-2]: 
+4. Fotmat [json]:
+
+### Deploy
 ```bash
 yarn run deploy
 ```
+
+
+# Endpoints to local
+
+- POST http://localhost:3000/dev/customers [create]
+- GET http://localhost:3000/dev/customers [find]
+- GET http://localhost:3000/dev/customers/{id} [find-by-id]
+- PATCH http://localhost:3000/dev/customers/{id} [update]
+- DELETE http://localhost:3000/dev/customers/{id} [delete]
+
+- POST http://localhost:3000/dev/customers/credit/{id} [add-credit]
+- GET http://localhost:3000/dev/customers/credit/sorted?sort=desc [sort-available-credit]
+
+## Test to REST-Client
+We have a section for testing endpoints in /test/e2e/local
