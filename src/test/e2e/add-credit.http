@@ -1,0 +1,5 @@
+POST http://localhost:3000/dev/customers/credit/edf1312a-95a2-4e56-85f4-5dedc36c8fc9
+
+{
+  "credit": 50.00
+}
