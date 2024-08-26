@@ -6,7 +6,13 @@ export class CustomerDto {
   readonly address: string;
   readonly credit: number;
 
-  constructor(name: string, email: string, phone: string, address: string, credit: number = 0.0) {
+  constructor(
+    name: string,
+    email: string,
+    phone: string,
+    address: string,
+    credit: number = 0.0,
+  ) {
     this.name = name;
     this.email = email;
     this.phone = phone;

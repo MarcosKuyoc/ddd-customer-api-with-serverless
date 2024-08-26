@@ -1,4 +1,4 @@
-import { CustomerRepository } from "../domain";
+import {CustomerRepository} from '../domain';
 
 export class CustomerDeleteApplication {
   constructor(readonly repository: CustomerRepository) {}

@@ -1,26 +1,28 @@
-import { v4 as uuidv4} from 'uuid';
-import { CustomerDto, CustomerRepository } from "../../domain";
-import { DynamoDBClient } from "../aws/dynamodb.client";
+import {v4 as uuidv4} from 'uuid';
+import {CustomerDto, CustomerRepository} from '../../domain';
+import {DynamoDBClient} from '../aws/dynamodb.client';
 
 const TABLE_NAME = 'customersTable';
 
 export class DynamoDBRepository implements CustomerRepository {
-  async create(customer: Omit<CustomerDto, "id" | "credit">): Promise<Pick<CustomerDto, "id">> {
+  async create(
+    customer: Omit<CustomerDto, 'id' | 'credit'>,
+  ): Promise<Pick<CustomerDto, 'id'>> {
     try {
       const id = uuidv4();
       const params = {
         TableName: TABLE_NAME,
-        Item: { ...customer, id }
-      }
+        Item: {...customer, id},
+      };
       await DynamoDBClient.put(params).promise();
-      return { id };
+      return {id};
     } catch (error) {
       console.error('DynamoDBRepository -> create');
       throw error;
     }
   }
 
-  async find():Promise<CustomerDto[] | []> {
+  async find(): Promise<CustomerDto[] | []> {
     try {
       const params = {
         TableName: TABLE_NAME,
@@ -32,8 +34,8 @@ export class DynamoDBRepository implements CustomerRepository {
           '#phone': 'phone',
           '#address': 'address',
           '#credit': 'credit',
-        }
-      }
+        },
+      };
 
       const result = await DynamoDBClient.scan(params).promise();
       if (result.Items) {
@@ -52,20 +54,20 @@ export class DynamoDBRepository implements CustomerRepository {
       const params = {
         TableName: TABLE_NAME,
         KeyConditionExpression: 'id = :id',
-        ExpressionAttributeValues: { ':id': id}
-      }
+        ExpressionAttributeValues: {':id': id},
+      };
       const customer = await DynamoDBClient.query(params).promise();
 
       if (customer.Items && customer.Items.length > 0) {
-         const item = customer.Items[0];
-         return {
+        const item = customer.Items[0];
+        return {
           id: item.id,
           name: item.name,
           email: item.email,
           phone: item.phone,
           address: item.address,
-          credit: item.credit
-         }
+          credit: item.credit,
+        };
       } else {
         return null;
       }
@@ -81,7 +83,7 @@ export class DynamoDBRepository implements CustomerRepository {
         TableName: TABLE_NAME,
         IndexName: 'email-index',
         KeyConditionExpression: 'email = :email',
-        ExpressionAttributeValues: { ':email': email}
+        ExpressionAttributeValues: {':email': email},
       };
 
       const customer = await DynamoDBClient.query(params).promise();
@@ -107,14 +109,14 @@ export class DynamoDBRepository implements CustomerRepository {
           '#email': 'email',
           '#phone': 'phone',
           '#address': 'address',
-          '#credit': 'credit'
+          '#credit': 'credit',
         },
         ExpressionAttributeValues: {
-          ':zero': 0
+          ':zero': 0,
         },
         ProjectionExpression: '#id, #name, #email, #phone, #address, #credit', // Usando los nombres escapados
         ScanIndexForward: false, // Ordena en orden desendente
-      }
+      };
 
       const result = await DynamoDBClient.scan(params).promise();
       if (result.Items) {
@@ -130,8 +132,8 @@ export class DynamoDBRepository implements CustomerRepository {
 
   async update(id: string, data: any): Promise<void> {
     try {
-      const ExpressionAttributeNames: { [key: string]: string } = {};
-      const ExpressionAttributeValues: { [key: string]: any } = {};
+      const ExpressionAttributeNames: {[key: string]: string} = {};
+      const ExpressionAttributeValues: {[key: string]: any} = {};
       let UpdateExpression = 'SET';
 
       // Genera nombres únicos para las claves de los atributos y valores
@@ -149,11 +151,11 @@ export class DynamoDBRepository implements CustomerRepository {
 
       const params = {
         TableName: TABLE_NAME,
-        Key: { id },
+        Key: {id},
         UpdateExpression,
         ExpressionAttributeNames,
         ExpressionAttributeValues,
-        ReturnValues: 'ALL_NEW' // Devuelve los nuevos valores del elemento después de la actualización
+        ReturnValues: 'ALL_NEW', // Devuelve los nuevos valores del elemento después de la actualización
       };
 
       await DynamoDBClient.update(params).promise();
@@ -162,12 +164,12 @@ export class DynamoDBRepository implements CustomerRepository {
       throw error;
     }
   }
-  
+
   async delete(id: string): Promise<void> {
     try {
       const params = {
         TableName: TABLE_NAME,
-        Key: { id }
+        Key: {id},
       };
 
       await DynamoDBClient.delete(params).promise();
