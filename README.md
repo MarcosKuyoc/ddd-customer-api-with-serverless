@@ -66,7 +66,8 @@ yarn add -D @types/uuid
 
 ### For linters(optional)
 ```bash
-yarn add -D eslint prettier
+yarn add -D eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin
+yarn add -D prettier eslint-config-prettier eslint-plugin-prettier
 ```
 
 ## Deploy - Production

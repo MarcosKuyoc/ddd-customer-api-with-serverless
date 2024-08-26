@@ -10,7 +10,7 @@
     "strictNullChecks": true,
     "moduleResolution": "node",
     "lib": ["ES2016"],
-    "outDir": ".build",
+    "outDir": "build",
     "rootDir": "./"
   },
   "exclude": ["node_modules", "**/*.test.ts"],

@@ -1,8 +1,8 @@
-PATCH http://localhost:3000/dev/customers/a81c3097-3fb8-4b30-a8f8-3de5eada5813
+PATCH http://localhost:3000/dev/customers/27cf0a0f-a745-410a-8593-d24eaf9282a2
 Content-Type: application/json
 
 {
-  "name": "Marcos Kuyoc",
+  "name": "Juan Escamilla",
   "email": "jmke.mat@gmail.com",
   "phone": "9842773217",
   "address": "Calle"

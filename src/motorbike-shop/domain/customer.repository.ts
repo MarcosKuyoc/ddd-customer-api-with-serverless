@@ -1,11 +1,13 @@
-import { CustomerDto } from "./customer.dto";
+import { Customer } from './customer';
 
 export interface CustomerRepository {
-  create(customer: Omit<CustomerDto, 'id' | 'credit'>): Promise<Pick<CustomerDto, 'id'>>;
-  find():Promise<CustomerDto[] | []>;
-  findById(id: string): Promise<CustomerDto | null>;
+  create(
+    customer: Omit<Customer, 'id' | 'credit'>,
+  ): Promise<Pick<Customer, 'id'>>;
+  find(): Promise<Customer[] | []>;
+  findById(id: string): Promise<Customer | null>;
   findByEmail(email: string): Promise<boolean>;
-  sortedByCredit(): Promise<CustomerDto[]>;
+  sortedByCredit(): Promise<Customer[]>;
   update(id: string, data: any): Promise<void>;
   delete(id: string): Promise<void>;
 }

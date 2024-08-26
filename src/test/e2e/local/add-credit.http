@@ -1,5 +1,5 @@
-POST http://localhost:3000/dev/customers/credit/edf1312a-95a2-4e56-85f4-5dedc36c8fc9
+POST http://localhost:3000/dev/customers/credit/c16035f5-a460-478b-83a2-b3b0245e9ce9
 
 {
-  "credit": 50.00
+  "credit": 10.00
 }

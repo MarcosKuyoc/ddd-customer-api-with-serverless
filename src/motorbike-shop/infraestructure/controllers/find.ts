@@ -1,7 +1,7 @@
-import { DynamoDBRepository } from '../db/dynamodb.repository';
-import { CustomerFindApplication } from "../../application/find.application";
+import {DynamoDBRepository} from '../db/dynamodb.repository';
+import {CustomerFindApplication} from '../../application/find.application';
 
-export const handler = async() => {
+export const handler = async () => {
   try {
     const repository = new DynamoDBRepository();
     const application = new CustomerFindApplication(repository);
@@ -9,8 +9,8 @@ export const handler = async() => {
     console.info(`find customers`);
     return {
       statusCode: 200,
-      body: JSON.stringify(customer)
-    }
+      body: JSON.stringify(customer),
+    };
   } catch (error: any) {
     console.error('[find - hander]');
     console.error(error.message);
@@ -21,4 +21,4 @@ export const handler = async() => {
       }),
     };
   }
-}
+};

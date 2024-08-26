@@ -1,4 +1,4 @@
-import { APIGatewayProxyEvent } from "aws-lambda";
+import {APIGatewayProxyEvent} from 'aws-lambda';
 
 export const queryGuard = (event: APIGatewayProxyEvent): {sort: string} => {
   try {
@@ -15,11 +15,11 @@ export const queryGuard = (event: APIGatewayProxyEvent): {sort: string} => {
       throw new Error('sort invalid');
     }
 
-    console.info('sort1',event.queryStringParameters.sort);
-    return { sort: event.queryStringParameters.sort };
+    console.info('sort1', event.queryStringParameters.sort);
+    return {sort: event.queryStringParameters.sort};
   } catch (error: any) {
     console.error('queryGuard');
     console.error(error.message);
     throw error;
   }
-}
+};

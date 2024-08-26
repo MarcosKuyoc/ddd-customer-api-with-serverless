@@ -1,5 +1,5 @@
 import { CustomerSortedByCreditApplication } from "../../../../motorbike-shop/application/sorted-by-credit.application";
-import { CustomerDto } from "../../../../motorbike-shop/domain";
+import { Customer } from "../../../../motorbike-shop/domain";
 
 describe('', () => {
   const mockCustomerRepository = {
@@ -12,15 +12,15 @@ describe('', () => {
     delete: jest.fn()
   };
 
-  it('should return sorted list of customers by credit in descending order when sort is "desc"', async() => {
+  it('should return sorted list of customers by credit in descending order when sort is "desc"', async () => {
     // Arrange
     const expectedResultDesc = [
-      new CustomerDto('Alice', 'alice@example.com', '1234567890', '123 Main St', 500),
-      new CustomerDto('Bob', 'bob@example.com', '0987654321', '456 Elm St', 300)
+      new Customer('Alice', 'alice@example.com', '1234567890', '123 Main St', 0),
+      new Customer('Bob', 'bob@example.com', '0987654321', '456 Elm St', 0)
     ];
 
     const mockSortedByCredit = mockCustomerRepository.sortedByCredit.mockResolvedValueOnce(expectedResultDesc);
-    
+
     // Act
     const customer = new CustomerSortedByCreditApplication(mockCustomerRepository);
     const result = await customer.sorted('desc');
@@ -31,15 +31,15 @@ describe('', () => {
     expect(mockSortedByCredit).toHaveBeenCalledTimes(1);
   });
 
-  it('should return sorted list of customers by credit in descending order when sort is "asc"', async() => {
+  it('should return sorted list of customers by credit in descending order when sort is "asc"', async () => {
     // Arrange
     const expectedResultDesc = [
-      new CustomerDto('Bob', 'bob@example.com', '0987654321', '456 Elm St', 300),
-      new CustomerDto('Alice', 'alice@example.com', '1234567890', '123 Main St', 500)
+      new Customer('Bob', 'bob@example.com', '0987654321', '456 Elm St', 300),
+      new Customer('Alice', 'alice@example.com', '1234567890', '123 Main St', 500)
     ];
 
     const mockSortedByCredit = mockCustomerRepository.sortedByCredit.mockResolvedValueOnce(expectedResultDesc);
-    
+
     // Act
     const customer = new CustomerSortedByCreditApplication(mockCustomerRepository);
     const result = await customer.sorted('asc');
@@ -50,7 +50,7 @@ describe('', () => {
     expect(mockSortedByCredit).toHaveBeenCalledTimes(1);
   });
 
-  it('should return empty array when repository result is empty', async() => {
+  it('should return empty array when repository result is empty', async () => {
     // Arrange
     const mockSortedByCredit = mockCustomerRepository.sortedByCredit.mockResolvedValueOnce([]);
 

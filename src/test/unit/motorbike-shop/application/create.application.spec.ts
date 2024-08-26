@@ -1,5 +1,5 @@
 import { CustomerCreateApplication } from "../../../../motorbike-shop/application/create.application";
-import { CustomerDto } from "../../../../motorbike-shop/domain";
+import { CustomerInput } from "../../../../motorbike-shop/domain/inputs-oupts.interface";
 
 describe('CustomerCreateApplication', () => {
   const mockCustomerRepository = {
@@ -12,7 +12,7 @@ describe('CustomerCreateApplication', () => {
     delete: jest.fn()
   };
 
-  const payload: Omit<CustomerDto, 'id' | 'credit'> = {
+  const payload: CustomerInput = {
     name: 'test-name',
     email: 'test-email@gmail.com',
     phone: 'phone-number',
@@ -20,7 +20,7 @@ describe('CustomerCreateApplication', () => {
   };
 
   // happi path
-  it('should return the ID of created customer', async() => {
+  it('should return the ID of created customer', async () => {
     // Arrange
     const customerId = {
       id: '123456',
@@ -31,7 +31,7 @@ describe('CustomerCreateApplication', () => {
     // Act
     const customer = new CustomerCreateApplication(mockCustomerRepository);
     const result = await customer.create(payload)
-    
+
     // Asserts
     expect(result).toBeDefined();
     expect(mockFindByEmail).toHaveBeenCalledTimes(1);
@@ -39,7 +39,7 @@ describe('CustomerCreateApplication', () => {
     expect(typeof result.id).toBe('string');
   });
 
-  it('should return throw error in database', async() => {
+  it('should return throw error in database', async () => {
     // Arrange
     const mockFindByEmail = mockCustomerRepository.findByEmail.mockResolvedValueOnce(false);
     const mockCreate = mockCustomerRepository.create.mockRejectedValueOnce(new Error('any error in database'));
@@ -57,7 +57,7 @@ describe('CustomerCreateApplication', () => {
     }
   });
 
-  it('should return throw error in email exists', async() => {
+  it('should return throw error in email exists', async () => {
     // Arrange
     const mockFindByEmail = mockCustomerRepository.findByEmail.mockResolvedValueOnce(true);
 
