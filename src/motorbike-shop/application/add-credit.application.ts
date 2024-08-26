@@ -1,16 +1,15 @@
-import {CustomerRepository} from '../domain';
+import { Customer, CustomerRepository } from '../domain';
 
 export class CustomerAddCreditApplication {
-  constructor(readonly repository: CustomerRepository) {}
+  constructor(readonly repository: CustomerRepository) { }
 
-  async add(id: string, credit: number) {
-    const customer = await this.repository.findById(id);
-
+  async add(id: string, amount: number) {
+    const customer: Customer | null = await this.repository.findById(id);
     if (!customer) {
       throw new Error('Customer not exist');
     }
 
-    const totalCredit = customer.credit + credit;
-    await this.repository.update(id, {credit: totalCredit});
+    customer.addCredit(amount);
+    await this.repository.update(id, { credit: customer.getCredit() });
   }
 }

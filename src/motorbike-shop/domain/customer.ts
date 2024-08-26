@@ -1,10 +1,10 @@
-export class CustomerDto {
+export class Customer {
   public id?: string;
   readonly name: string;
   readonly email: string;
   readonly phone: string;
   readonly address: string;
-  readonly credit: number;
+  private credit: number;
 
   constructor(
     name: string,
@@ -18,5 +18,15 @@ export class CustomerDto {
     this.phone = phone;
     this.address = address;
     this.credit = credit;
+  }
+
+  public getCredit(): number {
+    return this.credit;
+  }
+
+  public addCredit(amount: number): void {
+    if (amount > 0) {
+      this.credit += amount;
+    }
   }
 }
