@@ -1,18 +1,23 @@
 module.exports = {
-  parser: '@typescript-eslint/parser',
+  parser: '@typescript-eslint/parser', // Usa el parser de TypeScript
   parserOptions: {
-    ecmaVersion: 5, // Allows for the parsing of modern ECMAScript features
-    sourceType: 'module',
+    ecmaVersion: 2020, // Permite el uso de características modernas de ECMAScript
+    sourceType: 'module', // Soporta módulos ES
+    project: './tsconfig.json', // Apunta al archivo tsconfig.json
   },
   extends: [
-    'plugin:@typescript-eslint/recommended', // recommended rules from the @typescript-eslint/eslint-plugin
+    'eslint:recommended', // Reglas recomendadas de ESLint
+    'plugin:@typescript-eslint/recommended', // Reglas recomendadas para TypeScript
+    'plugin:prettier/recommended', // Integra Prettier con ESLint
   ],
+  plugins: ['@typescript-eslint', 'prettier'],
   rules: {
-    // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
-    // e.g. "@typescript-eslint/explicit-function-return-type": "off",
-    'indent': [
-      'error', 2
-    ],
-    'quotes': ['error', 'single']
+    'prettier/prettier': 'error', // Lanza errores si el código no sigue las reglas de Prettier
+    '@typescript-eslint/explicit-function-return-type': 'off', // Desactiva la regla de tipo de retorno explícito
+    '@typescript-eslint/no-unused-vars': ['warn'], // Muestra advertencias para variables no usadas
+    'indent': ['error', 2], // Requiere indentación de 2 espacios
+    'quotes': ['error', 'single'], // Usa comillas simples
+    'semi': ['error', 'always'], // Requiere punto y coma
+    'no-console': ['warn'], // Muestra advertencias para el uso de `console`
   },
 };
