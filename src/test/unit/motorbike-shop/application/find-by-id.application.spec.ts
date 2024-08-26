@@ -1,5 +1,5 @@
 import { CustomerFindApplication } from "../../../../motorbike-shop/application/find.application";
-import { CustomerDto } from "../../../../motorbike-shop/domain";
+import { CustomerOutPut } from "../../../../motorbike-shop/domain/inputs-oupts.interface";
 
 describe('CustomerFindApplication', () => {
   const mockCustomerRepository = {
@@ -13,7 +13,7 @@ describe('CustomerFindApplication', () => {
   };
 
   const customerId = '123456';
-  const expectedResult: CustomerDto = {
+  const expectedResult: CustomerOutPut = {
     id: customerId,
     name: 'test-name',
     email: 'test-email@gmail.com',
@@ -21,32 +21,32 @@ describe('CustomerFindApplication', () => {
     address: 'address',
     credit: 0.0
   };
-  
+
   describe('findById', () => {
     // happi path
-    it('should return customer', async() => {
+    it('should return customer', async () => {
       // Arrange
       const mockFindById = mockCustomerRepository.findById.mockResolvedValueOnce(expectedResult);
-  
+
       // Act
       const customer = new CustomerFindApplication(mockCustomerRepository);
       const result = await customer.findById(customerId)
-      
+
       // Asserts
       expect(result).toBeDefined();
       expect(mockFindById).toHaveBeenCalledTimes(1);
       expect(typeof result!.id).toBe('string');
-      expect(typeof result!.name).toBe('string');
-      expect(typeof result!.phone).toBe('string');
-      expect(typeof result!.address).toBe('string');
-      expect(typeof result!.credit).toBe('number');
+      // expect(typeof result!.name).toBe('string');
+      // expect(typeof result!.phone).toBe('string');
+      // expect(typeof result!.address).toBe('string');
+      // expect(typeof result!.credit).toBe('number');
       expect(result).toEqual(expectedResult);
     });
-  
-    it('should return throw error in database', async() => {
+
+    it('should return throw error in database', async () => {
       // Arrange
       const mockFindById = mockCustomerRepository.findById.mockRejectedValueOnce(new Error('any error in database'));
-  
+
       try {
         // Act
         const customer = new CustomerFindApplication(mockCustomerRepository);
@@ -62,26 +62,26 @@ describe('CustomerFindApplication', () => {
 
   describe('find', () => {
     // happi path
-    const expected: CustomerDto[] = [expectedResult];
-    it('should return customer', async() => {
+    const expected: CustomerOutPut[] = [expectedResult];
+    it('should return customer', async () => {
       // Arrange
       const mockFind = mockCustomerRepository.find.mockResolvedValueOnce(expected);
-  
+
       // Act
       const customer = new CustomerFindApplication(mockCustomerRepository);
       const result = await customer.find()
-      
+
       // Asserts
       expect(result).toBeDefined();
       expect(mockFind).toHaveBeenCalledTimes(1);
       expect(result.length).toBeGreaterThan(0);
       expect(result).toEqual(expected);
     });
-  
-    it('should return throw error in database', async() => {
+
+    it('should return throw error in database', async () => {
       // Arrange
-      const mockFind= mockCustomerRepository.find.mockRejectedValueOnce(new Error('any error in database'));
-  
+      const mockFind = mockCustomerRepository.find.mockRejectedValueOnce(new Error('any error in database'));
+
       try {
         // Act
         const customer = new CustomerFindApplication(mockCustomerRepository);

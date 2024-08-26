@@ -1,5 +1,5 @@
 import { CustomerAddCreditApplication } from "../../../../motorbike-shop/application/add-credit.application";
-import { CustomerDto } from "../../../../motorbike-shop/domain";
+import { Customer } from "../../../../motorbike-shop/domain";
 
 describe('CustomerAddCreditApplication', () => {
   const mockCustomerRepository = {
@@ -12,17 +12,12 @@ describe('CustomerAddCreditApplication', () => {
     delete: jest.fn()
   };
   const customerId = '123456';
-  const expectedResult: CustomerDto = {
-    id: customerId,
-    name: 'test-name',
-    email: 'test-email@gmail.com',
-    phone: 'phone-number',
-    address: 'address',
-    credit: 0.0
-  };
 
-  it('should add credit to an existing customer when customer ID exists', async() => {
+
+  it('should add credit to an existing customer when customer ID exists', async () => {
     // Arrange
+    const expectedResult = new Customer('test-name', 'test-email@gmail.com', '0987654321', '472 St', 0);
+
     const mockFindById = mockCustomerRepository.findById.mockResolvedValueOnce(expectedResult);
     const mockUpdate = mockCustomerRepository.update.mockResolvedValueOnce(void 0);
 
@@ -32,16 +27,16 @@ describe('CustomerAddCreditApplication', () => {
 
     // Assers
     expect(mockFindById).toHaveBeenCalledTimes(1);
-    expect(mockUpdate).toHaveBeenCalledWith(customerId, {credit: 50});
+    expect(mockUpdate).toHaveBeenCalledWith(customerId, { credit: 50 });
   });
 
-  it('should not update credit when customer ID does not exist', async() => {
+  it('should not update credit when customer ID does not exist', async () => {
     // Arrange
     const mockFindById = mockCustomerRepository.findById.mockResolvedValueOnce(null);
 
     // Act
     const customer = new CustomerAddCreditApplication(mockCustomerRepository);
-    
+
     // Asseerts
     await expect(customer.add('0000', 50)).rejects.toThrow('Customer not exist');
     expect(mockFindById).toHaveBeenCalledTimes(1);

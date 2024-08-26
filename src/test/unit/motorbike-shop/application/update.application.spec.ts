@@ -1,5 +1,5 @@
 import { CustomerUpdateApplication } from "../../../../motorbike-shop/application/update.application";
-import { CustomerDto } from "../../../../motorbike-shop/domain";
+import { CustomerInput } from "../../../../motorbike-shop/domain/inputs-oupts.interface";
 
 describe('CustomerUpdateApplication', () => {
   const mockCustomerRepository = {
@@ -12,7 +12,7 @@ describe('CustomerUpdateApplication', () => {
     delete: jest.fn()
   };
   const customerId = '123456';
-  const payload: Omit<CustomerDto, 'id' | 'credit'> = {
+  const payload: CustomerInput = {
     name: 'test-name',
     email: 'test-email@gmail.com',
     phone: 'phone-number',
@@ -20,7 +20,7 @@ describe('CustomerUpdateApplication', () => {
   };
 
   // happy path
-  it('should update customer data when valid id and data are provided', async() => {
+  it('should update customer data when valid id and data are provided', async () => {
     // Arrange
     const mockUpdate = mockCustomerRepository.update.mockResolvedValueOnce(void 0);
 
@@ -31,7 +31,7 @@ describe('CustomerUpdateApplication', () => {
     expect(mockUpdate).toHaveBeenCalledTimes(1);
   });
 
-  it('should return throw error in database', async() => {
+  it('should return throw error in database', async () => {
     // Arrange
     const nonExistentId = '00000';
     const mockDelete = mockCustomerRepository.delete.mockRejectedValueOnce(new Error('any error in database'));
