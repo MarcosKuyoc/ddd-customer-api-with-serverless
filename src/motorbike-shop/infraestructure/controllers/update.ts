@@ -1,16 +1,16 @@
-import {APIGatewayProxyEvent} from 'aws-lambda';
-import {DynamoDBRepository} from '../db/dynamodb.repository';
-import {bodyRequestGuard} from '../guards/body-request.guard';
-import {pathParametersGuard} from '../guards/path-parameter.guard';
-import {CustomerUpdateApplication} from '../../application/update.application';
-import {CustomerDto} from '../../domain';
+import { APIGatewayProxyEvent } from 'aws-lambda';
+import { DynamoDBRepository } from '../db/dynamodb.repository';
+import { bodyRequestGuard } from '../guards/body-request.guard';
+import { pathParametersGuard } from '../guards/path-parameter.guard';
+import { CustomerUpdateApplication } from '../../application/update.application';
+import { CustomerInput } from '../../domain/inputs-oupts.interface';
 
 export const handler = async (event: APIGatewayProxyEvent) => {
   try {
     const bodyRequest =
-      bodyRequestGuard<Omit<CustomerDto, 'id' | 'credit'>>(event);
+      bodyRequestGuard<CustomerInput>(event);
     const pathParameters = pathParametersGuard(event);
-    const {id} = pathParameters;
+    const { id } = pathParameters;
 
     const repository = new DynamoDBRepository();
     const application = new CustomerUpdateApplication(repository);

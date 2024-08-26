@@ -1,13 +1,13 @@
-import {CustomerDto, CustomerRepository} from '../domain';
+import { Customer, CustomerRepository } from '../domain';
 
 export class CustomerFindApplication {
-  constructor(readonly repository: CustomerRepository) {}
+  constructor(readonly repository: CustomerRepository) { }
 
-  async findById(id: string): Promise<CustomerDto | null> {
+  async findById(id: string): Promise<Customer | null> {
     return await this.repository.findById(id);
   }
 
-  async find(): Promise<CustomerDto[] | []> {
+  async find(): Promise<Customer[] | []> {
     return await this.repository.find();
   }
 }
