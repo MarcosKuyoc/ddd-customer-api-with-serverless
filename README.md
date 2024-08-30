@@ -1,4 +1,4 @@
-# Coding Challenge TaxDown Senior Bakend - Resolved
+# Coding Challenge
 
 ## Overview
 To sove the challenge web used serverless, Node.js, Typescript, DynamoDB and Jest
